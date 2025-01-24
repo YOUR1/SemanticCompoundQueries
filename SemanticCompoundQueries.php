@@ -63,12 +63,15 @@ class SemanticCompoundQueries {
 		$GLOBALS['wgAPIModules']['compoundquery'] = 'SCQ\Api\CompoundQuery';
 
 		// wgHooks
-		$GLOBALS['wgHooks']['ParserFirstCallInit'][] = function( Parser &$parser  ) {
-			$parser->setFunctionHook( 'compound_query', [ '\SCQ\CompoundQueryProcessor', 'doCompoundQuery' ] );
+		\MediaWiki\MediaWikiServices::getInstance()->getHookContainer()->register( 
+			'ParserFirstCallInit',
+			function( Parser &$parser  ) {
+				$parser->setFunctionHook( 'compound_query', [ '\SCQ\CompoundQueryProcessor', 'doCompoundQuery' ] );
 
-			// always return true, in order not to stop MW's hook processing!
-			return true;
-		};
+				// always return true, in order not to stop MW's hook processing!
+				return true;
+			}
+		);
 	}
 
 	/**
